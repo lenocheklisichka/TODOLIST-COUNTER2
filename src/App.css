@@ -1,0 +1,103 @@
+.App {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 100px;
+}
+
+.counter-box {
+  border: 4px solid green;
+  border-radius: 10px;
+  width: 440px;
+  height: 380px;
+}
+.counter {
+  height: 200px;
+  margin: 20px;
+  border-radius: 10px;
+  border: 5px solid chartreuse;
+  background-color: chartreuse;
+  color: black;
+  text-align: center;
+}
+
+.value {
+  font-size: 24px;
+}
+
+.settings-value {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.input {
+  text-align: center;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.input-error {
+  border: 2px solid red;
+  background-color: pink;
+  text-align: center;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.block-button {
+  border: 4px solid chartreuse;
+  border-radius: 10px ;
+  margin: 60px 0;
+  height: 100px;
+}
+
+.button-set {
+  width: 100px;
+  margin-top: 30px;
+  background-color: chartreuse;
+  border-radius: 10px;
+  border: 4px solid chartreuse;
+  font-size: 2em;
+}
+
+.counter-disabled {
+  color: red;
+}
+
+.box-button {
+  border: 4px solid chartreuse;
+  border-radius: 10px;
+  margin: 20px;
+  height: 100px;
+}
+
+.button-counter {
+  justify-content: space-around;
+  margin: 30px auto;
+  width: 380px;
+  display: flex;
+}
+
+.button-inc {
+  width: 130px;
+}
+
+.button-reset {
+  width: 160px;
+}
+
+.button-inc, .button-reset {
+  background-color: chartreuse;
+  border-radius: 10px;
+  border: 4px solid chartreuse;
+  font-size: 2em;
+}
+
+
+
+
+
+
+
+
+
