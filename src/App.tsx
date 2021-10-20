@@ -1,91 +1,79 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent,useState} from 'react';
 import './App.css';
+import {SettingsDisplay} from "./SettingsDisplay";
 import {Display} from "./Display";
-import {Button} from "./Button";
-import Input from "./Input";
 
-
-type StatusValueType = "Setting" | "Error" | "Counter"
+type StatusType = "Settings" | "Error"
 
 function App() {
-    let [counterState, setCounterState] = useState<number>(0);
-    let [disabled, setDisabled] = useState<boolean>(true);
+    let [displayValue, setDisplayValue] = useState<number>(0);
     let [startValue, setStartValue] = useState<number>(0)
     let [maxValue, setMaxValue] = useState<number>(0)
-    let [statusValue, setStatusValue] = useState<StatusValueType>("Counter")
+    let [status, setStatus] = useState<StatusType>()
+    let messageDisplaySettings = status === 'Settings' ? "Enter values and press 'set'"  :
+                                 status === 'Error' ? 'Incorrect value!': "0"
 
-    let values = startValue > 0 && maxValue > 0  && startValue < maxValue;
-
-    const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const changeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
         setStartValue(+e.currentTarget.value)
-        if(values) {
-            return setStatusValue("Setting")
+         if(startValue >= 0 && maxValue >= 0 && startValue < maxValue){
+            return setStatus("Settings")
         } else {
-            return setStatusValue("Error")
+            return setStatus("Error")
         }
     }
 
-    const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const changeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
         setMaxValue(+e.currentTarget.value)
-        if (values) {
-            return setStatusValue("Setting")
+        if(startValue >= 0 && maxValue >= 0 && startValue <= maxValue){
+            return setStatus("Settings")
         } else {
-            return setStatusValue("Error")
+            return setStatus("Error")
         }
     };
 
-    const setButton = () => {
+    const setOnClickButton = () => {
         setStartValue(startValue)
-        setCounterState(startValue)
+        setMaxValue(maxValue)
+        setDisplayValue(startValue)
     };
 
-    useEffect(() => {
-        localStorage.setItem("counterKey", JSON.stringify(counterState))
-    }, [counterState])
-
-    const changeCounterState = () => {
-        setCounterState(++counterState)
-        setDisabled(false)
+    const incCounterState = () => {
+        setDisplayValue(++displayValue)
     }
 
     const resetCounterState = () => {
-        setCounterState(0)
-        setDisabled(true)
+        setDisplayValue(startValue)
     }
     return (
         <div className="App">
             <div className='counter-box'>
                 <div className='counter'>
                     <div className='block-settings'>
-                        <div className='settings-value'>
-                            <div className='value'>max value:</div>
-                            <Input value={maxValue} className={values ? 'input' : 'input-error'} onChange={onChangeMaxValue} />
-                        </div>
-                        <div className='settings-value'>
-                            <div className='value'>start value:</div>
-                            <Input value={startValue} className={values ? 'input' : 'input-error'} onChange={onChangeStartValue}/>
-                        </div>
+                        <SettingsDisplay
+                            maxValue={maxValue}
+                            startValue={startValue}
+                            changeMaxValue={changeMaxValue}
+                            changeStartValue={changeStartValue}
+                            setOnClickButton={setOnClickButton}
+                        />
                     </div>
-                    <div className='block-button'>
-                        <Button state={values} title={'set'} className='button-set' disabled={false} onClick={setButton}/>
-                    </div>
+                </div>
+                <div className='block-button'>
+                    <button onClick={setOnClickButton}
+                            disabled={ maxValue === startValue || startValue < 0}
+                            className='button-set'>set
+                    </button>
                 </div>
             </div>
             <div className='counter-box'>
-                <Display counterState={counterState <= maxValue ? counterState : maxValue}
-                         className={counterState === maxValue ? "counter-disabled" : ""}
-                         changeCounterState={changeCounterState}
-                         resetCounterState={resetCounterState}
-                         messagesDisplay={statusValue === 'Error' ? "Incorrect value!" : statusValue === 'Setting' ? "Enter values and press 'set'" : "0" }
+                <Display
+                    displayValue={displayValue}
+                    maxValue={maxValue}
+                    messageDisplaySettings={messageDisplaySettings}
+                    startValue={startValue}
+                    incCounterState={incCounterState}
+                    resetCounterState={resetCounterState}
                 />
-                <div className='box-button'>
-                    <div className='button-counter'>
-                        <Button title={'inc'} className='button-inc'
-                                disabled={false} onClick={changeCounterState} state={counterState < maxValue}/>
-                        <Button title={'reset'} className='button-reset' disabled={disabled}
-                                onClick={resetCounterState} state={counterState > startValue}/>
-                    </div>
-                </div>
             </div>
         </div>
     );

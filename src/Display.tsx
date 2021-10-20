@@ -1,17 +1,32 @@
 import React from "react";
+import {Button} from "./Button";
 
 type CounterPropsType = {
-    counterState: number;
-    changeCounterState: () => void;
+    incCounterState: () => void;
     resetCounterState: () => void;
-    messagesDisplay: string
-    className: string
+    startValue: number
+    maxValue: number
+    displayValue: number
+    messageDisplaySettings: string
 }
 
 export function Display(props: CounterPropsType) {
     return (
-        <div className='counter'>
-            <div style={{paddingTop: "45px", fontSize: '35px'}}>{props.counterState || props.messagesDisplay}</div>
+        <div>
+            <div className='counter'>
+                <div className={props.displayValue === props.maxValue ? "disabled" : " "}
+                     style={{paddingTop: "55px", fontSize: '50px'}}>{props.displayValue || props.messageDisplaySettings }</div>
+            </div>
+            <div className='box-button'>
+                <div className='button-counter'>
+                    <Button incCounterState={props.incCounterState}
+                            resetCounterState={props.resetCounterState}
+                            displayValue={props.displayValue}
+                            maxValue={props.maxValue}
+                            startValue={props.startValue}
+                    />
+                </div>
+            </div>
         </div>
     )
 }
